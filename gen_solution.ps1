@@ -486,7 +486,8 @@ function New-Platform {
         "-G", "Visual Studio 18 2026",
         "-A", $Arch,
         "-DMQ_REGENERATE_SOLUTION=ON",
-        "-DMQ_BUILD_CUSTOM_PLUGINS=ON"
+        "-DMQ_BUILD_CUSTOM_PLUGINS=ON",
+        "-DMQ_BUILD_LAUNCHER=ON"
     )
 
     if ($SkipVcpkg) {
