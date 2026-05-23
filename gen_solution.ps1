@@ -531,13 +531,23 @@ function New-Platform {
         exit 1
     }
 
-    Write-VerboseLog "$Arch configuration completed: $BuildDir\MacroQuest.sln"
-
-    # Copy and clean the solution file
-    Write-Host ""
+    # Detect whether cmake produced .sln (VS<=17) or .slnx (VS>=18)
     $sourceSln = Join-Path $BuildDir "MacroQuest.sln"
-    $destSln = $SolutionPath
-    Copy-CleanedSolution -SourceSln $sourceSln -DestSln $destSln
+    $sourceSlnx = Join-Path $BuildDir "MacroQuest.slnx"
+
+    Write-Host ""
+    if (Test-Path $sourceSln) {
+        Write-VerboseLog "$Arch configuration completed: $sourceSln"
+        Copy-CleanedSolution -SourceSln $sourceSln -DestSln $SolutionPath
+    } elseif (Test-Path $sourceSlnx) {
+        # VS 2026 / CMake 4.2+ generates .slnx (XML format); copy as-is
+        Write-VerboseLog "$Arch configuration completed: $sourceSlnx"
+        $destSlnx = [System.IO.Path]::ChangeExtension($SolutionPath, ".slnx")
+        Copy-Item $sourceSlnx $destSlnx -Force
+        Write-Success "Solution saved to: $destSlnx"
+    } else {
+        Write-ErrorMessage "No solution file found in $BuildDir"
+    }
 }
 
 
@@ -551,6 +561,11 @@ Write-Host "==========================================" -ForegroundColor Yellow
 Write-Host ""
 
 try {
+    # Set VCPKG_ROOT to the bundled submodule if not already set externally
+    if (-not $env:VCPKG_ROOT) {
+        $env:VCPKG_ROOT = Join-Path $PSScriptRoot "contrib\vcpkg"
+    }
+
     # Check prerequisites
     Write-Step "Checking prerequisites..."
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -597,8 +612,8 @@ try {
         Write-Host ""
         Write-Host "Generated solutions:" -ForegroundColor Yellow
         Write-Host "  Architecture: $targetArch" -ForegroundColor Cyan
-        Write-Host "  CMake solution: $BuildDir\MacroQuest.sln" -ForegroundColor Cyan
-        Write-Host "  Cleaned solution: $SolutionPath (recommended)" -ForegroundColor Green
+        Write-Host "  CMake solution dir: $BuildDir\" -ForegroundColor Cyan
+        Write-Host "  Output solution: $OutputDir\ (recommended)" -ForegroundColor Green
         Write-Host ""
         Write-Host "Build output:" -ForegroundColor Yellow
         Write-Host "  Binaries: build\bin\debug\ or build\bin\release\" -ForegroundColor Cyan
