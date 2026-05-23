@@ -5,3 +5,5 @@
 # Tracked plugins for EQEmu Multiclass server build
 !MQ2Cast/
 !MQ2Cast/**
+!MQ2AutoAccept/
+!MQ2AutoAccept/**
