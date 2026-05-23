@@ -707,7 +707,7 @@ static HeartbeatState Heartbeat()
 	DebugTry(Benchmark(bmPluginsPulse, DebugTry(PulsePlugins())));
 
 	static bool ShownNews = false;
-	if (gGameState == GAMESTATE_CHARSELECT && !ShownNews)
+	if (gGameState == GAMESTATE_CHARSELECT && !ShownNews && pSidlMgr)
 	{
 		ShownNews = true;
 		if (gCreateMQ2NewsWindow)

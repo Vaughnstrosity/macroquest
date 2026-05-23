@@ -1110,10 +1110,14 @@ public:
 		SetZLayer(1);
 
 		OutputBox = (CStmlWnd*)GetChildItem("CW_ChatOutput");
+		InputBox = (CEditWnd*)GetChildItem("CW_ChatInput");
+
+		if (!OutputBox || !InputBox)
+			return;
+
 		OutputBox->SetParentWindow(this);
 
 		// Disable the input box since it doesn't handle anything anyway.
-		InputBox = (CEditWnd*)GetChildItem("CW_ChatInput");
 		InputBox->SetParentWindow(this);
 		InputBox->Enabled = false;
 	}
