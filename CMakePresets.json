@@ -9,14 +9,14 @@
         {
             "name": "base",
             "hidden": true,
-            "generator": "Visual Studio 17 2022",
+            "generator": "Visual Studio 18 2026",
             "toolset": "v143",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "MQ_CUSTOM_PLUGINS_FILE": "custom_plugins.cmake"
             },
             "environment": {
-                "VCPKG_ROOT": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg"
+                "VCPKG_ROOT": "${sourceDir}/contrib/vcpkg"
             }
         },
         {
