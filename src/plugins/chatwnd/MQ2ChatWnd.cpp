@@ -64,6 +64,13 @@ public:
 		SetBGColor(0xFF000000); // black background
 
 		InputBox = (CEditWnd*)GetChildItem("CW_ChatInput");
+		OutputBox = (CStmlWnd*)GetChildItem("CW_ChatOutput");
+
+		if (!InputBox || !OutputBox)
+		{
+			return;
+		}
+
 		InputBox->AddStyle(CWS_AUTOVSCROLL | CWS_RELATIVERECT | CWS_BORDER); // 0x800C0;
 		SetFaded(false);
 		SetEscapable(false);
@@ -73,7 +80,6 @@ public:
 		ContextMenuID = 3;
 		InputBox->SetCRNormal(0xFFFFFFFF); // we want a white cursor
 		InputBox->SetMaxChars(512);
-		OutputBox = (CStmlWnd*)GetChildItem("CW_ChatOutput");
 		OutputBox->SetParentWindow(this);
 		InputBox->SetParentWindow(this);
 		OutputBox->MaxLines = MAX_LINES_OUTBOX;
@@ -329,6 +335,12 @@ void SaveChatToINI(CSidlScreenWnd* pWindow)
 void CreateChatWindow()
 {
 	if (MQChatWnd)
+	{
+		return;
+	}
+
+	// SIDL manager must be valid before creating windows that read child widget pointers
+	if (!pSidlMgr)
 	{
 		return;
 	}
