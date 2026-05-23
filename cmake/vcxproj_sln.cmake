@@ -57,7 +57,7 @@ endif()
 
 # Add custom plugins from root plugins directory
 if(MQ_BUILD_CUSTOM_PLUGINS)
-    include(vcxproj_plugins.cmake)
+    include(${CMAKE_CURRENT_LIST_DIR}/vcxproj_plugins.cmake)
 endif()
 
 # Add tests

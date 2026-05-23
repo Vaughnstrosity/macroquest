@@ -156,7 +156,7 @@ else()
                 endif()
 
                 # Build the project location relative to CMAKE_CURRENT_SOURCE_DIR
-                file(RELATIVE_PATH PROJECT_LOCATION .. ${VCXPROJ_DIR})
+                file(RELATIVE_PATH PROJECT_LOCATION ${CMAKE_SOURCE_DIR} ${VCXPROJ_DIR})
 
                 add_custom_vcxproj(${PROJECT_LOCATION} ${PROJECT_NAME} ${PROJECT_PREFIX} MQ2Main)
 

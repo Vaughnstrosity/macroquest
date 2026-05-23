@@ -379,7 +379,8 @@ if ($vcpkgInstallTable.Count -ne 0) {
     if ($vcpkg_command -ne "install --x-wait-for-lock") {
         # For simultaneous runs, if vcpkg.exe is currently running, wait until it finishes.
         Wait-Process -Name "vcpkg.exe"
-        & ./vcpkg.exe $vcpkg_command.Split(" ")
+        $overlayArg = "--overlay-ports=$MQRoot\contrib\vcpkg-ports"
+        & ./vcpkg.exe ($vcpkg_command.Split(" ") + $overlayArg)
     }
 }
 
